@@ -23,3 +23,9 @@ class SectionType(models.Model):
 
     def __str__(self) -> str:
         return f"{self.section_type_id} - {self.section_description}"
+    
+class LandingDetail(models.Model):
+    landing_detail_id = models.AutoField(primary_key=True)
+    landing_id = models.ForeignKey(Landing, on_delete=models.CASCADE, related_name='details')
+    section_type_id = models.ForeignKey(SectionType, on_delete=models.CASCADE, related_name='landing_details')
+    value = models.IntegerField()

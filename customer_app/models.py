@@ -21,3 +21,13 @@ class State(models.Model):
     state_id = models.AutoField(primary_key=True)
     state = models.CharField(max_length=25)
 
+    def __str__(self):
+        return self.state
+    
+class City(models.Model):
+    city_id = models.AutoField(primary_key=True)
+    state_id = models.ForeignKey(State, on_delete=models.CASCADE, related_name='cities')
+    city = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.city
