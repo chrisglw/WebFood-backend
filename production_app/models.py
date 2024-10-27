@@ -1,5 +1,5 @@
 from django.db import models
-from customer_app.models import City
+from customer_app.models import City, Customer, Address
 
 # Create your models here.
 class Category(models.Model):
@@ -31,3 +31,29 @@ class Supplier(models.Model):
 
     def __str__(self):
         return self.supplier_name
+
+class Product(models.Model):
+    product_id = models.AutoField(primary_key=True)
+    category_id = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
+    product_name = models.CharField(max_length=100)  # Renamed from 'product' for clarity
+    description = models.TextField()
+    cost = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    stock = models.PositiveIntegerField()
+    supplier_id = models.ForeignKey(Supplier, on_delete=models.CASCADE, related_name='products')
+    # user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='products')  # Uncomment if needed
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.product_name
+
+class Order(models.Model):
+    order_id = models.AutoField(primary_key=True)
+    order_number = models.CharField(max_length=50, unique=True)  # Unique order number
+    order_date = models.DateTimeField(auto_now_add=True)  # Automatically set to the current date and time when created
+    customer_id = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='orders')  # ForeignKey to Customer
+    address_id = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='orders')  # ForeignKey to Address
+
+    def __str__(self):
+        return f"Order #{self.order_number} by {self.customer_id.first_name} {self.customer_id.last_name}"
