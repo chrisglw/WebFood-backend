@@ -31,3 +31,12 @@ class City(models.Model):
 
     def __str__(self):
         return self.city
+    
+class Address(models.Model):
+    address_id = models.AutoField(primary_key=True)
+    customer_id = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='addresses')
+    address_name = models.CharField(max_length=100)
+    line_1 = models.CharField(max_length=255)
+    line_2 = models.CharField(max_length=255, blank=True, null=True)
+    city_id = models.ForeignKey(City, on_delete=models.CASCADE, related_name='addresses')
+    postal_code =  models.CharField(max_length=20)

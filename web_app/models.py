@@ -1,4 +1,5 @@
 from django.db import models
+from client_app.models import Commerce
 
 # Create your models here.
 class Landing(models.Model):
@@ -29,3 +30,11 @@ class LandingDetail(models.Model):
     landing_id = models.ForeignKey(Landing, on_delete=models.CASCADE, related_name='details')
     section_type_id = models.ForeignKey(SectionType, on_delete=models.CASCADE, related_name='landing_details')
     value = models.IntegerField()
+
+class LandingCommerce(models.Model):
+    landing_commerce_id = models.AutoField(primary_key=True)
+    landing_id = models.ForeignKey(Landing, on_delete=models.CASCADE, related_name='landing_commerces')
+    commerce_id = models.ForeignKey(Commerce, on_delete=models.CASCADE, related_name='landing_commerces')
+
+    def __str__(self) -> str:
+        return f"{self.landing_id} - {self.commerce_id}"
