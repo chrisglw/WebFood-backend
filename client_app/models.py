@@ -1,4 +1,5 @@
 from django.db import models
+from production_app.models import Product
 
 # Create your models here.
 class CommerceCategory(models.Model):
@@ -25,3 +26,8 @@ class Commerce(models.Model):
 
     def __str__(self) -> str:
         return self.commerce_name
+    
+class CommerceProduct(models.Model):
+    commerce_product_id = models.AutoField(primary_key=True)
+    commerce_id = models.ForeignKey(Commerce, on_delete=models.CASCADE, related_name='commerce_products')
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='commerce_products')

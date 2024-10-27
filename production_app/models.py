@@ -57,3 +57,20 @@ class Order(models.Model):
 
     def __str__(self):
         return f"Order #{self.order_number} by {self.customer_id.first_name} {self.customer_id.last_name}"
+
+class OrderDetail(models.Model):
+    order_detail_id = models.AutoField(primary_key=True)
+    order_id = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_details')
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='order_details')
+    quantity = models.PositiveIntegerField()
+
+    def __str__(self) -> str:
+        return f"{self.product_id.product_name} - Quantity: {self.quantity}"
+
+class MenuProduct(models.Model):
+    menu_product_id = models.AutoField(primary_key=True)
+    menu_id = models.ForeignKey(Menu, on_delete=models.CASCADE, related_name='menu_products')
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='menu_products')
+
+    def __str__(self) -> str:
+        return f"{self.product_id.name} in {self.menu_id.menu_name}"
